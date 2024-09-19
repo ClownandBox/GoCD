@@ -21,22 +21,18 @@ pipelines:
         branch: main
         name: SourceCodeRepo
     stages:
-    - name: deploy_to_cluster
-      fetch_materials: true
-      keep_artifacts: false
-      clean_workspace: false
-      approval:
-        type: success
-      jobs:
-      - name: deploy
-        timeout: 0
-        elastic_profile_id: demo-app
-        tasks:
-        - name: deploy
-          type: exec
-          attributes:
-            command: bash
-            args:
-              - "-c"
-              - "./app-deployment.sh"
-          run_if: passed
+    - deploy_to_cluster:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+        jobs:
+          deploy:
+          timeout: 0
+          elastic_profile_id: demo-app
+          tasks:
+            - exec:
+                arguments:
+                command: ./app-deployment.sh
+                run_if: passed
