@@ -32,7 +32,7 @@ pipelines:
           timeout: 0
           elastic_profile_id: demo-app
           tasks:
-            - exec:
-                arguments:
-                command: ./app-deploy.sh
-                run_if: passed
+          - exec:
+              arguments:
+              command: ./app-deploy.sh
+              run_if: passed
