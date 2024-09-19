@@ -15,7 +15,7 @@ pipelines:
         stage: test_app_image
         name: upstream_pipeline
       SourceCodeRepo:
-        git: https://github.com/gocd-demo/node-bulletin-board.git 
+        git: https://github.com/gocd-demo/node-bulletin-board.git  
         shallow_clone: false
         auto_update: true
         branch: master
@@ -34,9 +34,6 @@ pipelines:
         tasks:
         - name: fetch
           type: fetch
-          options:
-            EnvironmentVariablePrefix: ''
-            SkipImagePulling: 'true'
           artifact_id: nginx-image
           pipeline: build_and_publish_image/test_application
           stage: build_and_publish_image
