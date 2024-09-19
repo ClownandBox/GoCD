@@ -10,10 +10,6 @@ pipelines:
       IMAGE_TAG: "latest"
       DEPLOYMENT_NAME: "nginx-deployment"
     materials:
-      upstream:
-        pipeline: test_application
-        stage: test_app_image
-        name: upstream_pipeline
       SourceCodeRepo:
         git: https://github.com/ClownandBox/GoCD-deploy.git
         shallow_clone: false
