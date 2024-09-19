@@ -15,10 +15,10 @@ pipelines:
         stage: test_app_image
         name: upstream_pipeline
       SourceCodeRepo:
-        git: https://github.com/gocd-demo/node-bulletin-board.git
+        git: https://github.com/ClownandBox/GoCD-deploy.git
         shallow_clone: false
         auto_update: true
-        branch: master
+        branch: main
         name: SourceCodeRepo
     stages:
     - name: deploy_to_cluster
