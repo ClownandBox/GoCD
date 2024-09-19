@@ -15,7 +15,7 @@ pipelines:
         stage: test_app_image
         name: upstream_pipeline
       SourceCodeRepo:
-        git: https://github.com/gocd-demo/node-bulletin-board.git  
+        git: https://github.com/gocd-demo/node-bulletin-board.git
         shallow_clone: false
         auto_update: true
         branch: master
@@ -32,14 +32,6 @@ pipelines:
         timeout: 0
         elastic_profile_id: demo-app
         tasks:
-        - name: fetch
-          type: fetch
-          artifact_id: nginx-image
-          pipeline: build_and_publish_image/test_application
-          stage: build_and_publish_image
-          job: build_image
-          artifact_origin: external
-          run_if: passed
         - name: deploy
           type: exec
           attributes:
