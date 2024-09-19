@@ -6,40 +6,49 @@ pipelines:
     lock_behavior: none
     display_order: 3
     environment_variables:
+      IMAGE_NAME: "nginx"
+      IMAGE_TAG: "latest"
+      DEPLOYMENT_NAME: "nginx-deployment"
     materials:
       upstream:
         pipeline: test_application
         stage: test_app_image
         name: upstream_pipeline
       SourceCodeRepo:
-        git: https://github.com/gocd-demo/node-bulletin-board.git
+        git: https://github.com/gocd-demo/node-bulletin-board.git 
         shallow_clone: false
         auto_update: true
         branch: master
         name: SourceCodeRepo
     stages:
-    - deploy_to_cluster:
-        fetch_materials: true
-        keep_artifacts: false
-        clean_workspace: false
-        approval:
-          type: success
-        jobs:
-          deploy:
-            timeout: 0
-            elastic_profile_id: demo-app1
-            tasks:
-            - fetch:
-                options:
-                  EnvironmentVariablePrefix: ''
-                  SkipImagePulling: 'true'
-                artifact_id: bulletin-board
-                pipeline: build_and_publish_image/test_application
-                stage: build_and_publish_image
-                job: build_image
-                artifact_origin: external
-                run_if: passed
-            - exec:
-                arguments:
-                command: ./app-deployment.sh
-                run_if: passed
+    - name: deploy_to_cluster
+      fetch_materials: true
+      keep_artifacts: false
+      clean_workspace: false
+      approval:
+        type: success
+      jobs:
+      - name: deploy
+        timeout: 0
+        elastic_profile_id: demo-app
+        tasks:
+        - name: fetch
+          type: fetch
+          options:
+            EnvironmentVariablePrefix: ''
+            SkipImagePulling: 'true'
+          artifact_id: nginx-image
+          pipeline: build_and_publish_image/test_application
+          stage: build_and_publish_image
+          job: build_image
+          artifact_origin: external
+          run_if: passed
+        - name: deploy
+          type: exec
+          attributes:
+            command: bash
+            args:
+              - "-c"
+              - >
+                ./app-deployment.sh
+          run_if: passed
